@@ -3,7 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sample/views/loginPage.dart';
-import 'example_app.dart';
+
+import 'views/homePage.dart';
 
 void main() async {
   await dotenv.load();
@@ -30,31 +31,12 @@ class _GeoIncognitoAppState extends State<GeoIncognitoApp> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoApp(
+    return MaterialApp(
       home: _user != null
           ? HomePage()
           : Scaffold(
               body: LoginPage(callback: callback),
             ),
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      // appBar: AppBar(backgroundColor: Colors.blue),
-      body: Center(
-        child: Text("User present"),
-      ),
     );
   }
 }
