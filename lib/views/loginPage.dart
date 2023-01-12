@@ -4,8 +4,8 @@ import 'package:auth0_flutter/auth0_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class LoginPage extends StatefulWidget {
-  final Auth0? auth0;
-  const LoginPage({this.auth0, final Key? key}) : super(key: key);
+  Function(UserProfile?) callback;
+  LoginPage({required this.callback, final Key? key}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -18,8 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    auth0 = widget.auth0 ??
-        Auth0(dotenv.env['AUTH0_DOMAIN']!, dotenv.env['AUTH0_CLIENT_ID']!);
+    auth0 = Auth0(dotenv.env['AUTH0_DOMAIN']!, dotenv.env['AUTH0_CLIENT_ID']!);
   }
 
   Future<void> login() async {
@@ -30,6 +29,7 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       debugPrint(credentials.accessToken);
       _user = credentials.user;
+      widget.callback(_user);
     });
   }
 
@@ -112,9 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                   style: TextStyle(fontSize: 24, color: Color(0xff42A55D)),
                   textAlign: TextAlign.center,
                 ),
-                onPressed: () {
-                  login;
-                },
+                onPressed: login,
               ),
             ),
             Spacer(),
